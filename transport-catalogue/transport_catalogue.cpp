@@ -2,7 +2,7 @@
 
 namespace transport {
 
-void Catalogue::AddStop(const std::string stop_name, geo::Coordinates& coordinates) {
+void Catalogue::AddStop(const std::string& stop_name, const geo::Coordinates& coordinates) {
     stops_.push_back({stop_name, coordinates, {}});
     stopname_to_stop_[stops_.back().name] = &stops_.back();
 }
@@ -15,7 +15,7 @@ const Stop* Catalogue::FindStop(const std::string& stop_name) const {
 }    
     
     
-void Catalogue::AddBus(const std::string route_number, const std::vector<std::string> route_stops) {
+void Catalogue::AddBus(const std::string& route_number, const std::vector<std::string>& route_stops) {
     buses_.push_back({route_number, route_stops});
     for (const auto& route_stop : route_stops) {
         for (auto& stop_ : stops_) {
