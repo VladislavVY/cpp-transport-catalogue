@@ -24,9 +24,9 @@ struct BusInfo {
 
 class Catalogue {
 public:
-    void AddStop(const std::string stop_name, geo::Coordinates& coordinates);
+    void AddStop(const std::string& stop_name, const geo::Coordinates& coordinates);
     const Stop* FindStop(const std::string& stop_name) const;
-    void AddBus(const std::string route_number, const std::vector<std::string> route_stops);
+    void AddBus(const std::string& route_number, const std::vector<std::string>& route_stops);
     const Bus* FindBus(const std::string& route_number) const;
     const BusInfo GetBusInfo(const std::string& route_number) const;
     const std::set<std::string> GetBusesOnStop(const std::string& stop_name) const;
