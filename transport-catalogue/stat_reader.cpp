@@ -16,7 +16,8 @@ void ParseAndPrintStat(const Catalogue& transport_catalogue, std::ostream& outpu
             if (transport_catalogue.FindBus(route_number)) {
                 output << "Bus " << route_number << ": " << transport_catalogue.GetBusInfo(route_number).stops_count << " stops on route, "
                        << transport_catalogue.GetBusInfo(route_number).unique_stops_count << " unique stops, " << std::setprecision(6)
-                       << transport_catalogue.GetBusInfo(route_number).route_length << " route length" << std::endl;
+                       << transport_catalogue.GetBusInfo(route_number).route_length << " route length, "
+                       << transport_catalogue.GetBusInfo(route_number).curvature << " curvature" << std::endl; 
             }
             else {
                 output << "Bus " << route_number << ": not found" << std::endl;
