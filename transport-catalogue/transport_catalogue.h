@@ -1,8 +1,10 @@
 #pragma once
 
 #include "geo.h"
+#include "domain.h"
 
 #include <deque>
+#include <map>
 #include <optional>
 #include <stdexcept>
 #include <set>
@@ -13,34 +15,17 @@
 
 namespace transport {
 
-struct Stop {
-    std::string name;
-    geo::Coordinates coordinates;
-    std::set<std::string> buses;
-};    
-    
-struct Bus {
-    std::string number;
-    std::vector<const Stop*> stops;
-};
-
-struct BusInfo {
-    size_t stops_count;
-    size_t unique_stops_count;
-    double route_length;
-    double curvature;
-};
-
 class Catalogue {
 public:
-    void AddStop(const std::string& stop_name, const geo::Coordinates& coordinates);
-    const Stop* FindStop(const std::string& stop_name) const;
-    void AddBus(const std::string& route_number, const std::vector<std::string>& route_stops);
-    const Bus* FindBus(const std::string& route_number) const;
-    const BusInfo GetBusInfo(const std::string& route_number) const;
-    const std::set<std::string> GetBusesOnStop(const std::string& stop_name) const;
+    
+    void AddStop(std::string_view stop_name, const geo::Coordinates coordinates);
+    const Stop* FindStop(std::string_view stop_name) const;
+    void AddBus(std::string_view bus_number, const std::vector<const Stop*> stops, bool is_circle);
+    const Bus* FindBus(std::string_view bus_number) const;
+    size_t GetNumberOfUniqueStops(std::string_view bus_number) const;
     void SetStopDistance(const Stop* from, const Stop* to, const int distance);
     int GetStopDistance(const Stop* from, const Stop* to) const;
+    const std::map<std::string_view, const Bus*> GetSortedBuses() const;
     struct StopDistancesHasher {
         size_t operator()(const std::pair<const Stop*, const Stop*>& points) const {
             size_t hash_first = std::hash<const void*>{}(points.first);
@@ -52,8 +37,9 @@ public:
 private:
     std::deque<Bus> buses_;
     std::unordered_map<std::string_view, const Bus*> busname_to_bus_;
-    std::deque<Stop> stops_;
+    std::deque<Stop> stops_;    
     std::unordered_map<std::string_view, const Stop*> stopname_to_stop_;
     std::unordered_map<std::pair<const Stop*, const Stop*>, int, StopDistancesHasher> stop_distances_;
 };
-}
+
+} // namespace transport
