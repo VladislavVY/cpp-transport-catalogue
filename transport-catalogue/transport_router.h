@@ -25,10 +25,10 @@ public:
         BuildGraph(catalogue);
     }
     
-	using RouteInfo = graph::Router<double>::RouteInfo;
+    using RouteInfo = graph::Router<double>::RouteInfo;
     const std::optional<RouteInfo> FindRoute(const std::string_view stop_from, const std::string_view stop_to) const;
     
-	const graph::DirectedWeightedGraph<double>& GetGraph() const; //используется в GetRouterGraph() request_handler.cpp
+    const graph::DirectedWeightedGraph<double>& GetGraph() const;
 
 private:
     Settings settings_;
@@ -36,8 +36,8 @@ private:
     void BuildStopsGraph(const Catalogue& catalogue);
     void BuildBusesGraph(const Catalogue& catalogue);
     
-	graph::DirectedWeightedGraph<double> graph_;
-	std::map<std::string, graph::VertexId> stop_id_;
-	std::unique_ptr<graph::Router<double>> router_;
+    graph::DirectedWeightedGraph<double> graph_;
+    std::map<std::string, graph::VertexId> stop_id_;
+    std::unique_ptr<graph::Router<double>> router_;
 };
 } // namespace transport
