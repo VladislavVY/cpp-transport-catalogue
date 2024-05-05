@@ -16,7 +16,7 @@ void TransportRouter::BuildStopsGraph(const Catalogue& catalogue) {
     std::string type = "Stop";
     for (const auto& [stop_name, info] : all_stops) {
         stop_id[info->name] = vertex_id;
-        graph_stops.AddEdge({type, vertex_id, ++vertex_id, static_cast<double>(bus_wait_time_)});
+        graph_stops.AddEdge({type, vertex_id, ++vertex_id, static_cast<double>(settings_.bus_wait_time)});
         ++vertex_id;
     }
     graph_ = std::move(graph_stops);
@@ -36,11 +36,12 @@ void TransportRouter::BuildBusesGraph(const Catalogue& catalogue) {
                 int dist = 0;
                 int dist_reverse = 0;
                 for (size_t k = i + 1; k <= j; ++k) {
-                    dist += catalogue.GetStopDistance(stops[k - 1], stops[k]); dist_reverse += catalogue.GetStopDistance(stops[k], stops[k - 1]);
+                    dist += catalogue.GetStopDistance(stops[k - 1], stops[k]); 
+                    dist_reverse += catalogue.GetStopDistance(stops[k], stops[k - 1]);
                 }
-                graph_.AddEdge({type, stop_id_.at(stop_from->name) + 1, stop_id_.at(stop_to->name), static_cast<double>(dist) / (bus_velocity_ * K_MH_TO_M_MIN)});
+                graph_.AddEdge({type, stop_id_.at(stop_from->name) + 1, stop_id_.at(stop_to->name), static_cast<double>(dist) / (settings_.bus_velocity * K_MH_TO_M_MIN)});
                 if (!info->is_roundtrip) {
-                    graph_.AddEdge({type, stop_id_.at(stop_to->name) + 1, stop_id_.at(stop_from->name), static_cast<double>(dist_reverse) / (bus_velocity_ * K_MH_TO_M_MIN)});
+                    graph_.AddEdge({type, stop_id_.at(stop_to->name) + 1, stop_id_.at(stop_from->name), static_cast<double>(dist_reverse) / (settings_.bus_velocity * K_MH_TO_M_MIN)});
                 }
             }
         }
@@ -48,7 +49,7 @@ void TransportRouter::BuildBusesGraph(const Catalogue& catalogue) {
     router_ = std::make_unique<graph::Router<double>>(graph_);
 }
 
-const std::optional<graph::Router<double>::RouteInfo> TransportRouter::GetRouter(const std::string_view stop_from, const std::string_view stop_to) const {
+const std::optional<graph::Router<double>::RouteInfo> TransportRouter::FindRoute(const std::string_view stop_from, const std::string_view stop_to) const {
 	return router_->BuildRoute(stop_id_.at(std::string(stop_from)),stop_id_.at(std::string(stop_to)));
 }
 
