@@ -25,7 +25,7 @@ public:
     void SetUnderlayerColor(renderer::RenderSettings& settings, const json::Dict& map_request) const;
     void SetColorPalette(renderer::RenderSettings& settings, const json::Dict& v) const;
     svg::Color ParseColor(const json::Node& color_node) const;
-    transport::TransportRouter FillRoutingSettings(const json::Node& settings) const;
+    transport::TransportRouter::Settings FillRoutingSettings(const json::Node& settings) const;
 
     void PrintStatRequests(const json::Node& stat_requests, RequestHandler& rh) const;
     const json::Node PrintRoute(const json::Dict& map_request, RequestHandler& rh) const;
