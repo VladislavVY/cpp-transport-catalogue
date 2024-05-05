@@ -22,7 +22,7 @@ public:
     bool SearchBusNumber(const std::string_view bus_number) const;
     bool SearchStopName(const std::string_view stop_name) const;
     const std::optional<graph::Router<double>::RouteInfo> GetRouting(const std::string_view stop_name_from, const std::string_view stop_name_to) const;
-    const graph::DirectedWeightedGraph<double>& GetGraph() const;
+    const graph::DirectedWeightedGraph<double>& GetRouterGraph() const;
 
 private:
     const transport::Catalogue& catalogue_;
