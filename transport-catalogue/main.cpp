@@ -12,7 +12,7 @@ int main() {
     const auto& routing_settings = json_doc.GetRoutingSettings();
     const auto& renderer = json_doc.FillRenderSettings(render_settings);
     const auto& full_routing = json_doc.FillRoutingSettings(routing_settings);
-    const transport::TransportRouter router = {full_routing, catalogue};
+    const transport::TransportRouter router(full_routing, catalogue);
     
     RequestHandler req_hand(catalogue, renderer, router);
     
