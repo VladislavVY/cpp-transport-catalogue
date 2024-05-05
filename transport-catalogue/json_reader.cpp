@@ -146,10 +146,10 @@ svg::Color JsonReader::ParseColor(const json::Node& color_node) const {
     throw std::logic_error("Unsupported color format");
 }
 
-transport::TransportRouter JsonReader::FillRoutingSettings(const json::Node& settings) const {
+transport::TransportRouter::Settings JsonReader::FillRoutingSettings(const json::Node& settings) const {
     const auto& wait_time = settings.AsDict().at("bus_wait_time").AsInt();
     const auto& velocity = settings.AsDict().at("bus_velocity").AsDouble();
-    return transport::TransportRouter{wait_time, velocity};
+    return transport::TransportRouter::Settings{wait_time, velocity};
 }
 
 void JsonReader::PrintStatRequests(const json::Node& stat_requests, RequestHandler& req_hand) const {
@@ -236,7 +236,7 @@ const json::Node JsonReader::PrintRouting(const json::Dict& map_request, Request
         result = GetErrorMessage(id);
     }
     else {
-        const auto& graph = req_hand.GetGraph();
+        const auto& graph = req_hand.GetRouterGraph();
         json::Array items;
         double total_time = 0.0;
         for (auto& edge_id : routing.value().edges) {
