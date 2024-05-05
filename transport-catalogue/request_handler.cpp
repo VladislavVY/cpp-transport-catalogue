@@ -48,3 +48,11 @@ bool RequestHandler::SearchBusNumber(const std::string_view bus_number) const {
 bool RequestHandler::SearchStopName(const std::string_view stop_name) const {
     return catalogue_.FindStop(stop_name);
 }
+
+const std::optional<graph::Router<double>::RouteInfo> RequestHandler::GetRouting(const std::string_view stop_name_from, const std::string_view stop_name_to) const {
+    return router_.GetRouter(stop_name_from, stop_name_to);
+}
+
+const graph::DirectedWeightedGraph<double>& RequestHandler::GetGraph() const {
+    return router_.GetGraph();
+}
