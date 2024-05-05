@@ -26,6 +26,7 @@ public:
     void SetStopDistance(const Stop* from, const Stop* to, const int distance);
     int GetStopDistance(const Stop* from, const Stop* to) const;
     const std::map<std::string_view, const Bus*> GetSortedBuses() const;
+    const std::map<std::string_view, const Stop*> GetSortedStops() const;
     struct StopDistancesHasher {
         size_t operator()(const std::pair<const Stop*, const Stop*>& points) const {
             size_t hash_first = std::hash<const void*>{}(points.first);
@@ -33,7 +34,7 @@ public:
             return hash_first + hash_second * 37;
         }
     };
-
+       
 private:
     std::deque<Bus> buses_;
     std::unordered_map<std::string_view, const Bus*> busname_to_bus_;
